@@ -59,7 +59,7 @@ description = """
 )
 
 console_scripts = [
-    "dt-pip-utils = dt_pip_utils.cli:resolve",
+    "dt-pip-resolve = dt_pip_utils.cli:resolve",
 ]
 # setup package
 setup(
