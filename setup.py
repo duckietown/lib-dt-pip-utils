@@ -3,13 +3,13 @@ from setuptools import find_packages, setup
 # :==> Fill in your project data here
 # The package name is the name on PyPI
 # it is not the python module names.
-package_name = "dt-pondcleaner"
+package_name = "dt-pip-utils"
 library_webpage = "http://github.com/duckietown/template-library"
-maintainer = "Mack"
-maintainer_email = "admin@duckietown.org"
-short_description = "A short description"
+maintainer = "Andrea F. Daniele"
+maintainer_email = "afdaniele@duckietown.com"
+short_description = "Python PIP utils"
 full_description = """
-A longer description.
+Python PIP utils from Duckietown.
 """
 
 # Read version from the __init__ file
@@ -29,7 +29,7 @@ def get_version_from_source(filename):
     return version
 
 
-version = get_version_from_source("src/duckietown_pondcleaner/__init__.py")
+version = get_version_from_source("src/dt_pip_utils/__init__.py")
 
 # read project dependencies
 # NO - dependencies.txt is for testing dependiences - EVERYTHING PINNED
@@ -38,7 +38,10 @@ version = get_version_from_source("src/duckietown_pondcleaner/__init__.py")
 # with open(dependencies_file, 'rt') as fin:
 #     dependencies = list(filter(lambda line: not line.startswith('#'), fin.read().splitlines()))
 
-install_requires = []
+install_requires = [
+    "requests",
+    "requirements-parser"
+]
 tests_require = []
 
 # compile description
@@ -56,7 +59,7 @@ description = """
 )
 
 console_scripts = [
-    "dt-pc-demo = duckietown_pondcleaner:dt_pc_demo",
+    "dt-pip-utils = dt_pip_utils.cli:resolve",
 ]
 # setup package
 setup(
