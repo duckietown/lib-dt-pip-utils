@@ -1,5 +1,6 @@
 import json
 import os
+import time
 from json import JSONDecodeError
 from typing import Dict, Optional
 
@@ -7,23 +8,38 @@ import requests
 from requests import Response
 
 
-def download_json(url: str, headers: Dict[str, str] = None):
+def download_json(url: str, headers: Dict[str, str] = None) -> Optional[str]:
     headers = headers or {}
 
-    try:
-        r: Response = requests.get(url, headers=headers, timeout=20)
-    except requests.exceptions.ConnectionError:
-        raise
+    max_trials: int = 3
+    wait_on_retry: float = 1.0
+    for trial in range(1, max_trials + 1):
 
-    if r.status_code != 200:
-        raise Exception(f"HTTP error: code[{r.status_code}], message: {r.reason}")
-    else:
         try:
-            j = json.dumps(r.json())
-        except JSONDecodeError:
-            msg = f"Cannot decode JSON from '{url}'"
-            raise Exception(f"JSONDecodeError: {msg}")
-        return j
+            r: Response = requests.get(url, headers=headers, timeout=20)
+        except requests.exceptions.ConnectionError:
+            if trial == max_trials:
+                raise
+            else:
+                time.sleep(wait_on_retry)
+                continue
+
+        if r.status_code != 200:
+            if trial == max_trials:
+                raise Exception(f"HTTP error: code[{r.status_code}], message: {r.reason}")
+            else:
+                time.sleep(wait_on_retry)
+                continue
+        else:
+            try:
+                return json.dumps(r.json())
+            except JSONDecodeError:
+                if trial == max_trials:
+                    msg = f"Cannot decode JSON from '{url}'"
+                    raise Exception(f"JSONDecodeError: {msg}")
+                else:
+                    time.sleep(wait_on_retry)
+                    continue
 
 
 def interpret_pypi(json_string):
