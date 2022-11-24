@@ -40,7 +40,7 @@ def update_versions(fin: str, fout: Optional[str] = None):
             resolved.append(s2)
 
     # compile output file
-    res = "\n".join(resolved)
+    res = "\n".join(resolved) + "\n"
     # write file to disk
     with open(fout, "wt") as buf:
         buf.write(res)
