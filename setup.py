@@ -4,7 +4,7 @@ from setuptools import find_packages, setup
 # The package name is the name on PyPI
 # it is not the python module names.
 package_name = "dt-pip-utils"
-library_webpage = "http://github.com/duckietown/template-library"
+library_webpage = "https://github.com/duckietown/lib-dt-pip-utils"
 maintainer = "Andrea F. Daniele"
 maintainer_email = "afdaniele@duckietown.com"
 short_description = "Python PIP utils"
